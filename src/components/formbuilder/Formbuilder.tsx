@@ -1,103 +1,116 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import React from 'react';
-import MenuItem from '@mui/material/MenuItem';
+import React, { useState, ChangeEvent } from 'react';
+import { Formik, Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import {useState, ChangeEvent} from "react"
+import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Radio from '@mui/material/Radio';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import { FormHelperText } from "@mui/material";
-import { AnyNsRecord } from "dns";
-import {formElement} from "../formbuilder/UserFormElements"
-
+import FormControl from '@mui/material/FormControl';
+import { FormHelperText } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
+import Button from '@mui/material/Button';
+import { FormElements } from '../formbuilder/UserFormElements';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
   phonenumber: Yup.string().required('Phone number is required'),
-  // Add more fields and validation rules as needed
 });
 
+type FormElement = {
+  name: string;
+  id: string;
+  eType: 'checkbox' | 'radio' | 'textfield' | 'select';
+  placeholder: string;
+  mData?: { option: string[] };
+  helpText?: string;
+};
 
+interface TextData {
+  [key: string]: string;
+}
 
-const Formbuilder = ({formElement}:any) => {
-  const [textData , setTextData ]=useState<{ [key: string]: string }>({}) 
-  
-  const handleTextData = (e:ChangeEvent<HTMLInputElement>) => {
+const Formbuilder: React.FC<{ formElements: FormElement[] }> = ({
+  formElements,
+}) => {
+  const [textData, setTextData] = useState<TextData>({});
+
+  const handleTextData = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-   setTextData({ ...textData, [name]: value })
-}
-
-  const handleSelectChange=(e: SelectChangeEvent)=>{
-  const {name, value} =e.target;
-  setTextData({ ...textData, [name]: value })
-}
-
-
-  const {eType}=formElement;
-
-  const renderSelectedComponent = (element:any) => {
-    switch (element.eType) {
-      case "checkbox":
-        return <Checkbox name={element.name}/>;
-      case "radio":
-        return <Radio name={element.name}/>;
-      case "textfield":
-        return <TextField  name={element.name} id={element.id} placeholder={element.placeholder} onChange={handleTextData}/>;
-      case "button":
-        return <Button/>
-      case "select":
-        return 
-        <Select 
-      value={textData[element.name]} 
-      onChange={handleSelectChange}
-    >
-      {element.mData.option.map((option: any, index: any) => (
-        <MenuItem key={index} value={option}>{option}</MenuItem>
-      ))}
-    </Select>
-      
-      default:
-        return null;
-    }
+    setTextData({ ...textData, [name]: value });
   };
-  return (
-    <Formik
-    initialValues={{}}
-    validationSchema={validationSchema}
-    onSubmit={(values, { setSubmitting }) => {
-      // Handle form submission
-      console.log(values);
-      setSubmitting(false);
-    }}
-  >
-    {({ isSubmitting }) => (
-      <Form>
-        {
-          formElement.map((element, index) => (
+
+  const handleSelectChange = (e: SelectChangeEvent) => {
+    const { name, value } = e.target;
+    setTextData({ ...textData, [name]: value as string });
+  };
+
+  const renderSelectedComponent = (elements: FormElement[]) => {
+    console.log('elements', elements);
+
+    return elements.map((element, index) => {
+      switch (element.eType) {
+        case 'checkbox':
+          return <Checkbox key={index} name={element.name} />;
+        case 'radio':
+          return <Radio key={index} name={element.name} />;
+        case 'textfield':
+          return (
+            <TextField
+              key={index}
+              name={element.name}
+              id={element.id}
+              placeholder={element.placeholder}
+              onChange={handleTextData}
+            />
+          );
+        case 'select':
+          return (
             <FormControl key={index}>
               <InputLabel htmlFor={element.name}>
                 {element.placeholder}
               </InputLabel>
-              {renderSelectedComponent(element)}
+              <Select
+                value={textData[element.name]}
+                onChange={handleSelectChange}
+              >
+                {element.mData?.option?.map((option: string, index: number) => (
+                  <MenuItem key={index} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
               <FormHelperText id={element.name}>
                 {element.helpText}
               </FormHelperText>
             </FormControl>
-          ))
-        }
-        <Button type="submit" disabled={isSubmitting}>Submit</Button>
-      </Form>
-    )}
-  </Formik>
-  )
-}
+          );
+        default:
+          return null;
+      }
+    });
+  };
 
-export default Formbuilder
+  const handleSubmit = (values: any, actions: FormikHelpers<any>) => {
+    console.log(values);
+    actions.setSubmitting(false);
+  };
+  return (
+    <Formik
+      initialValues={{}}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting }) => (
+        <Form>
+          {renderSelectedComponent(formElements)}
+          <Button type='submit' disabled={isSubmitting}>
+            Submit
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
+};
 
+export default Formbuilder;
