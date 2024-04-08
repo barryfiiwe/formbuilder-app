@@ -1,8 +1,6 @@
-
-
-import './App.css'
-import Formbuilder from './components/formbuilder/Formbuilder'
-import { FormElements } from './components/formbuilder/UserFormElements'
+import './App.css';
+import Formbuilder from './components/formbuilder/Formbuilder';
+import { formElements } from './components/formbuilder/UserFormElements';
 
 function App() {
   const handleSubmit = (data) => {
