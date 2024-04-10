@@ -36,10 +36,6 @@ export const formElements: FormElement[] = [
     eType: 'number',
     dType: 'number',
     placeholder: 'Enter your age',
-    validation: {
-      required: true,
-      min: 1,
-    },
   },
   {
     id: 'password',
@@ -61,12 +57,21 @@ export const formElements: FormElement[] = [
     dType: 'email',
     placeholder: 'Enter your email',
     width: 48,
+    validation: {
+      required: true,
+    },
+  },
+  {
+    id: 'textarea',
+    label: 'TextArea',
+    name: 'textarea',
+    eType: 'textarea',
+    dType: 'text',
+    placeholder: 'Enter your message',
+    width: 78,
     mData: {
       multiline: true,
       rows: 8,
-    },
-    validation: {
-      required: true,
     },
   },
   {
@@ -80,6 +85,11 @@ export const formElements: FormElement[] = [
     label: 'Upload',
     name: 'upload',
     eType: 'upload',
+    width: 30,
+    mData: {
+      align: 'center',
+      accept: 'application/pdf,text/csv, .png, .jpg, jpeg',
+    },
   },
   {
     id: 'gender',
@@ -99,5 +109,24 @@ export const formElements: FormElement[] = [
     label: 'Submit',
     name: 'submit',
     eType: 'button',
+    dType: 'submit',
+    width: 40,
+    mData: {
+      align: 'center',
+      variant: 'outlined',
+    },
+  },
+  {
+    id: 'button',
+    label: 'Cancel',
+    name: 'cancel',
+    eType: 'button',
+    dType: 'button',
+    width: 40,
+    mData: {
+      align: 'center',
+      variant: 'contained',
+      color: 'error',
+    },
   },
 ];
