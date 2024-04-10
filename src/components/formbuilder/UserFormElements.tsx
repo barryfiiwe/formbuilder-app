@@ -21,9 +21,15 @@ export const formElements: FormElement[] = [
     dType: 'text',
     placeholder: 'Enter your first name',
     helperText: 'Your first name',
+    validation: {
+      required: {
+        value: true,
+        message: 'Yesy yes',
+      },
+    },
   },
   {
-    id: 'uplaod',
+    id: 'file',
     name: 'file',
     eType: 'file',
     dType: 'file',
@@ -32,10 +38,16 @@ export const formElements: FormElement[] = [
   {
     id: 'age',
     label: 'Age',
-    name: 'number',
+    name: 'age',
     eType: 'number',
     dType: 'number',
     placeholder: 'Enter your age',
+    validation: {
+      min: {
+        value: 1,
+        message: 'Min value is 1',
+      },
+    },
   },
   {
     id: 'password',
@@ -46,7 +58,10 @@ export const formElements: FormElement[] = [
     placeholder: 'Enter your password',
     width: 48,
     validation: {
-      required: true,
+      required: {
+        value: true,
+        message: 'This value is required',
+      },
     },
   },
   {
@@ -58,7 +73,10 @@ export const formElements: FormElement[] = [
     placeholder: 'Enter your email',
     width: 48,
     validation: {
-      required: true,
+      required: {
+        value: true,
+        message: 'Value is required',
+      },
     },
   },
   {

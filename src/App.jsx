@@ -11,8 +11,7 @@ function App() {
 
     setTimeout(() => {
       setLoadingState(false);
-      console.log(data);
-      setPreview(data.upload);
+      setPreview(data);
     }, 2000);
   };
 
@@ -37,23 +36,40 @@ function App() {
         style={{
           height: '400px',
           border: '1px solid red',
-          display: 'flex',
-          flexWrap: 'wrap',
         }}
       >
-        {preview?.length > 0 &&
-          preview?.map((e) => (
-            <img
-              key={e}
-              src={URL.createObjectURL(e)}
-              alt="File preview"
+        {
+          <>
+            <p>{preview.firstname}</p>
+            <p>{preview.email}</p>
+            <p>{preview.gender}</p>
+            <p>{preview.age}</p>
+            <p>{preview.newsletter}</p>
+            <p>{preview.password}</p>
+            <p>{preview.textarea}</p>
+            <div
               style={{
-                marginTop: '10px',
-                maxWidth: '50%',
-                height: 'auto',
+                height: '400px',
+                border: '1px solid red',
+                display: 'flex',
+                flexWrap: 'wrap',
               }}
-            />
-          ))}
+            >
+              {preview?.upload?.map((i) => (
+                <img
+                  key={i}
+                  src={URL.createObjectURL(i)}
+                  alt="File preview"
+                  style={{
+                    marginTop: '10px',
+                    maxWidth: '100px',
+                    height: 'auto',
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        }
       </div>
     </div>
   );

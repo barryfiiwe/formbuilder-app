@@ -127,59 +127,67 @@ const FormBuilder: React.FC<FormBuilderProps> = ({
                 name={element.name}
                 control={control}
                 rules={element.validation}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth>
-                    {element.eType === 'upload' ? (
-                      <>
-                        <Button
-                          component="label"
-                          variant="contained"
-                          startIcon={<CloudUploadIcon />}
-                        >
-                          {element.label}
-                          <VisuallyHiddenInput
-                            type="file"
-                            accept={element.mData?.accept}
-                            onChange={(event) => handleFileChange(event, field)}
-                          />
-                        </Button>
-                        <div
-                          style={{
-                            display: 'flex',
-                            gap: '10px',
-                            flexWrap: 'wrap',
-                          }}
-                        >
-                          {previewUrl.length > 0 &&
-                            previewUrl.map((e) => (
-                              <img
-                                key={e}
-                                src={e}
-                                alt="File preview"
-                                style={{
-                                  marginTop: '10px',
-                                  maxWidth: '100px',
-                                  height: 'auto',
-                                }}
-                              />
-                            ))}
-                        </div>
-                      </>
-                    ) : (
-                      renderInput(
-                        { ...field, error: error, helpertext: error?.type },
-                        element,
-                        loadingState,
-                        handleClickShowPassword,
-                        handleMouseDownPassword,
-                        showPassword
-                      )
-                    )}
-                    <FormHelperText id={`${element.id}-helper-text`}>
-                      {element.helperText}
-                    </FormHelperText>
-                  </FormControl>
-                )}
+                render={({ field, fieldState: { error } }) => {
+                  return (
+                    <FormControl fullWidth>
+                      {element.eType === 'upload' ? (
+                        <>
+                          <Button
+                            component="label"
+                            variant="contained"
+                            startIcon={<CloudUploadIcon />}
+                          >
+                            {element.label}
+                            <VisuallyHiddenInput
+                              type="file"
+                              accept={element.mData?.accept}
+                              onChange={(event) =>
+                                handleFileChange(event, field)
+                              }
+                            />
+                          </Button>
+                          <div
+                            style={{
+                              display: 'flex',
+                              gap: '10px',
+                              flexWrap: 'wrap',
+                            }}
+                          >
+                            {previewUrl.length > 0 &&
+                              previewUrl.map((e) => (
+                                <img
+                                  key={e}
+                                  src={e}
+                                  alt="File preview"
+                                  style={{
+                                    marginTop: '10px',
+                                    maxWidth: '100px',
+                                    height: 'auto',
+                                  }}
+                                />
+                              ))}
+                          </div>
+                        </>
+                      ) : (
+                        renderInput(
+                          {
+                            ...field,
+                            error: error,
+                            helperText: error?.message,
+                          },
+                          element,
+                          loadingState,
+                          handleClickShowPassword,
+                          handleMouseDownPassword,
+                          showPassword
+                        )
+                      )}
+                      <FormHelperText id={`${element.id}-helper-text`}>
+                        {element.helperText}
+                      </FormHelperText>
+                    </FormControl>
+                  );
+                }}
               />
             </Box>
           );
